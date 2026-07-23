@@ -1,5 +1,5 @@
 {
-  "name": "pixelopen/magento-cloudflare-turnstile",
+  "name": "nimasystems/magento-cloudflare-turnstile",
   "description": "Protect your store from spam messages and spam user accounts with Cloudflare Turnstile",
   "require": {
     "php": "^8",
@@ -7,7 +7,7 @@
     "magento/framework": "*"
   },
   "type": "magento2-module",
-  "version": "999.0.0",
+  "version": "1.0.0",
   "autoload": {
     "files": [
       "registration.php"
