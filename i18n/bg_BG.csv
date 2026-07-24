@@ -1,0 +1,13 @@
+"Admin Panel","Admin Panel"
+"Cloudflare Turnstile","Cloudflare Turnstile"
+Enabled,Enabled
+"Forms to validate","Forms to validate"
+"Secret key","Secret key"
+"Security validation error: %1","Security validation error: %1"
+Settings,Settings
+"Site key","Site key"
+Size,Size
+Storefront,Storefront
+Theme,Theme
+"Unable to secure the form","Unable to secure the form"
+"Unable to secure the form. The site key is missing.","Unable to secure the form. The site key is missing."
