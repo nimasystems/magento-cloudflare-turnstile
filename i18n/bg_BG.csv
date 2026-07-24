@@ -1,13 +1,13 @@
-"Admin Panel","Admin Panel"
+"Admin Panel","Административен панел"
 "Cloudflare Turnstile","Cloudflare Turnstile"
-Enabled,Enabled
-"Forms to validate","Forms to validate"
-"Secret key","Secret key"
-"Security validation error: %1","Security validation error: %1"
-Settings,Settings
-"Site key","Site key"
-Size,Size
-Storefront,Storefront
-Theme,Theme
-"Unable to secure the form","Unable to secure the form"
-"Unable to secure the form. The site key is missing.","Unable to secure the form. The site key is missing."
+Enabled,Активирано
+"Forms to validate","Формуляри за проверка"
+"Secret key","Тайният ключ"
+"Security validation error: %1","Грешка при проверката на сигурността: %1"
+Settings,Настройки
+"Site key","Ключ на сайта"
+Size,"На вас"
+Storefront,Витрина
+Theme,Тема
+"Unable to secure the form","Не е възможно да се защити формулярът"
+"Unable to secure the form. The site key is missing.","Не е възможно да се защити формулярът. Липсва ключът на сайта."
