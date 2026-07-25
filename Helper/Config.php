@@ -144,7 +144,7 @@ class Config extends AbstractHelper
             ScopeInterface::SCOPE_STORE
         );
 
-        return $forms ? array_filter(explode(',', $forms)) : [];
+        return $forms ? array_filter(explode(',', (string) $forms)) : [];
     }
 
     /**
@@ -159,7 +159,7 @@ class Config extends AbstractHelper
             ScopeInterface::SCOPE_STORE
         );
 
-        return $forms ? array_filter(explode(',', $forms)) : [];
+        return $forms ? array_filter(explode(',', (string) $forms)) : [];
     }
 
     /**
