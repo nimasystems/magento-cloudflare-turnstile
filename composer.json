@@ -1,26 +1,26 @@
 {
-  "name": "nimasystems/magento-cloudflare-turnstile",
-  "description": "Protect your store from spam messages and spam user accounts with Cloudflare Turnstile",
-  "require": {
-    "php": "^8",
-    "magento/module-config": "*",
-    "magento/framework": "*"
-  },
-  "type": "magento2-module",
-  "version": "1.2.0",
-  "autoload": {
-    "files": [
-      "registration.php"
-    ],
-    "psr-4": {
-      "PixelOpen\\CloudflareTurnstile\\": ""
-    }
-  },
-  "authors": [
-    {
-      "name": "Pixel Open",
-      "homepage": "https://pixel-open.org/",
-      "role": "Developer"
-    }
-  ]
+    "name": "nimasystems/magento-cloudflare-turnstile",
+    "description": "Protect your store from spam messages and spam user accounts with Cloudflare Turnstile",
+    "require": {
+        "php": "^8",
+        "magento/module-config": "*",
+        "magento/framework": "*"
+    },
+    "type": "magento2-module",
+    "version": "1.3.0",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "PixelOpen\\CloudflareTurnstile\\": ""
+        }
+    },
+    "authors": [
+        {
+            "name": "Pixel Open",
+            "homepage": "https://pixel-open.org/",
+            "role": "Developer"
+        }
+    ]
 }
