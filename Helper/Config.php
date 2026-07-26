@@ -163,6 +163,24 @@ class Config extends AbstractHelper
     }
 
     /**
+     * Map a Magento locale to a Cloudflare Turnstile widget language.
+     *
+     * Turnstile accepts an ISO 639-1 code (optionally with a country suffix)
+     * and falls back to browser detection when given "auto" — passing the
+     * store language keeps the widget consistent with the storefront locale
+     * instead of the visitor's browser.
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getWidgetLanguage(string $locale): string
+    {
+        $language = strtolower(strtok($locale, '_') ?: '');
+
+        return preg_match('/^[a-z]{2,3}$/', $language) ? $language : 'auto';
+    }
+
+    /**
      * Retrieve API URL
      *
      * @return string
