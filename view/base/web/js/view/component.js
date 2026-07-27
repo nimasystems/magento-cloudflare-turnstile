@@ -39,6 +39,13 @@ define(
             theme: '', // Override config value if not empty,
             widgetId: null,
             autoRendering: true,
+            /**
+             * Wait for the host form to be reachable by the visitor before
+             * rendering, instead of challenging on page load. See
+             * renderWhenReachable() for why. Set false to opt a widget back
+             * into rendering the moment it is loaded.
+             */
+            deferRendering: true,
             element: null,
 
             /**
@@ -74,9 +81,78 @@ define(
                 } else {
                     this.beforeRender();
                     if (this.autoRendering) {
-                        this.render();
+                        if (this.deferRendering) {
+                            this.renderWhenReachable();
+                        } else {
+                            this.render();
+                        }
                     }
                 }
+            },
+
+            /**
+             * Render once the host form can actually be reached, rather than on
+             * page load.
+             *
+             * Every rendered widget costs a Cloudflare challenge bundle plus its
+             * iframe — measured at ~500 KB apiece. Layouts that keep auth forms
+             * in the DOM of every page (an authentication popup, a social-login
+             * modal) therefore paid for several challenges on views where nobody
+             * was ever going to log in: on the storefront home page that was
+             * three widgets, ~1.5 MB, roughly 40% of total page weight.
+             *
+             * Two triggers, whichever fires first:
+             *
+             *  - the host form scrolling into view. This is what keeps the
+             *    change safe. The widget is rendered before the visitor can
+             *    read the form, let alone submit it, so the token is in flight
+             *    well ahead of any submit — deferring on interaction alone would
+             *    risk a submit landing before Cloudflare has issued a token.
+             *  - any interaction with the form (focus, pointer, key). This
+             *    covers forms an IntersectionObserver cannot see becoming
+             *    reachable, notably one revealed inside a modal that was
+             *    display:none at load.
+             *
+             * Browsers without IntersectionObserver keep the original eager
+             * behaviour.
+             */
+            renderWhenReachable: function () {
+                var self = this,
+                    host = $(this.element).closest('form').get(0) || this.element,
+                    observer = null,
+                    rendered = false,
+                    events = 'focusin.cfTurnstileDefer pointerdown.cfTurnstileDefer keydown.cfTurnstileDefer',
+                    trigger = function () {
+                        if (rendered) {
+                            return;
+                        }
+                        rendered = true;
+
+                        if (observer) {
+                            observer.disconnect();
+                        }
+                        $(host).off('.cfTurnstileDefer');
+                        self.render();
+                    };
+
+                $(host).on(events, trigger);
+
+                if (typeof window.IntersectionObserver === 'undefined') {
+                    trigger();
+
+                    return;
+                }
+
+                observer = new window.IntersectionObserver(function (entries) {
+                    var visible = entries.some(function (entry) {
+                        return entry.isIntersecting;
+                    });
+
+                    if (visible) {
+                        trigger();
+                    }
+                });
+                observer.observe(host);
             },
 
             /**
