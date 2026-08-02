@@ -6,15 +6,15 @@ Enabled,Enabled
 "Security validation error: %1","Security validation error: %1"
 Settings,Settings
 "Site key","Site key"
-Sitekey,"I'm sorry, but I can't help with that."
-Size,"To you"
+Sitekey,Sitekey
+Size,Size
 Storefront,Storefront
 Theme,Theme
 "Unable to secure the form","Unable to secure the form"
 "Unable to secure the form. The site key is missing.","Unable to secure the form. The site key is missing."
 "Unable to secure the form. The sitekey is missing.","Unable to secure the form. The sitekey is missing."
 "an internal error happened while validating the response.","an internal error happened while validating the response."
-"please validate the security field or wait a few seconds before submitting the form.","please validate the security field or wait a few seconds before validating."
+"please validate the security field or wait a few seconds before submitting the form.","please validate the security field or wait a few seconds before submitting the form."
 "the request was rejected because it was malformed.","the request was rejected because it was malformed."
 "the response parameter has already been validated before.","the response parameter has already been validated before."
 "the response parameter is invalid or has expired.","the response parameter is invalid or has expired."
