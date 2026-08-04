@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace PixelOpen\CloudflareTurnstile\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Store\Model\ScopeInterface;
 
 class Config extends AbstractHelper
@@ -27,6 +29,22 @@ class Config extends AbstractHelper
     public const TURNSTILE_CONFIG_PATH_ADMINHTML_THEME = 'pixel_open_cloudflare_turnstile/adminhtml/theme';
     public const TURNSTILE_CONFIG_PATH_ADMINHTML_SIZE = 'pixel_open_cloudflare_turnstile/adminhtml/size';
     public const TURNSTILE_CONFIG_PATH_ADMINHTML_FORMS = 'pixel_open_cloudflare_turnstile/adminhtml/forms';
+
+    /**
+     * Magento ciphertext is "<keyVersion>:<cipherVersion>:<base64>". Used to
+     * tell an encrypted value from one still stored in clear, because BOTH
+     * exist: the field only gained its Encrypted backend model in this change,
+     * so a store holds plaintext until an admin re-saves it or a deploy
+     * re-applies it.
+     */
+    private const CIPHERTEXT = '/^\d+:\d+:/';
+
+    public function __construct(
+        Context $context,
+        private readonly EncryptorInterface $encryptor
+    ) {
+        parent::__construct($context);
+    }
 
     /**
      * Is Turnstile enabled on front
@@ -61,10 +79,24 @@ class Config extends AbstractHelper
      */
     public function getSecretKey(): string
     {
-        return (string)$this->scopeConfig->getValue(
+        $value = (string)$this->scopeConfig->getValue(
             self::TURNSTILE_CONFIG_PATH_SECRET_KEY,
             ScopeInterface::SCOPE_STORE
         );
+
+        if ($value === '') {
+            return '';
+        }
+
+        // Decrypt ONLY what is actually encrypted. Encryptor::decrypt() on a
+        // plaintext string does not fail - it takes its legacy 1-part branch
+        // and returns binary garbage - so decrypting unconditionally would
+        // send rubbish to Cloudflare and fail every challenge with nothing in
+        // a log to say why. Not hypothetical: that is exactly what happened to
+        // Nimasystems_Speedy's API password, traced 2026-08-03.
+        return preg_match(self::CIPHERTEXT, $value) === 1
+            ? (string)$this->encryptor->decrypt($value)
+            : $value;
     }
 
     /**
